@@ -1,0 +1,143 @@
+package com.happiergore.myrealessentials;
+
+import commands.CommandManager;
+import commands.argsComplete;
+import commands.UserControl.Gamemode;
+import events.OnPlayerDamage;
+import static helper.TextUtils.parseColor;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+/**
+ *
+ * @author HappierGore
+ */
+public class main extends JavaPlugin implements Listener {
+
+    private String sversion;
+
+    public static FileConfiguration configYML;
+
+    @Override
+    public void onEnable() {
+
+        System.out.println(parseColor("\n&3------------------ §bMyRealEssentials - Logger §3------------------"));
+
+        if (!setupManager()) {
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        System.out.println(parseColor("&9------------------------------------------------------------------"));
+
+        configYML = getConfig();
+
+        //Crear config.yml en caso de que no exista
+        saveDefaultConfig();
+
+        //Comandos
+        registerCommands();
+
+        //Registrar eventos
+        getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    //***********************
+    //        EVENTOS
+    //***********************
+    @EventHandler
+    public void OnEntityDamage(EntityDamageEvent e) {
+        OnPlayerDamage.OnPlayerDamage(e);
+    }
+
+    //***********************
+    //        Helper
+    //***********************
+    private void registerCommands() {
+        CommandManager.init();
+        argsComplete args = new argsComplete();
+        System.out.println("Commands registered at register call: " + CommandManager.getRegisteredCommands().toString());
+        CommandManager.getRegisteredCommands().forEach(cmd -> {
+            System.out.println("Looping in " + cmd.getCmdName());
+            this.getCommand(cmd.getCmdName()).setExecutor(new CommandManager());
+            if (!cmd.getArguments().isEmpty()) {
+                this.getCommand(cmd.getCmdName()).setTabCompleter(args);
+            }
+        });
+    }
+
+    private void successMessage(String version) {
+
+        StringBuilder enabledMsg = new StringBuilder();
+        enabledMsg.append("\n&bMy real essentials has been loaded sucessfuly!\n\n");
+        enabledMsg.append("Client version: ").append(sversion).append(" \nPlugin version selected: ").append(version);
+        enabledMsg.append("\n\n&6Autor: HappierGore\n");
+        enabledMsg.append("&9Discord: &nHappierGore#1197\n");
+        enabledMsg.append("&3Spigot: https://www.spigotmc.org/resources/authors/happiergore.1046101/\n");
+        enabledMsg.append("&eSupport: https://discord.gg/ZKy5eVPxW5\n");
+        enabledMsg.append("&9Please, leave me a rating! <3\n\n");
+
+        System.out.println(parseColor(enabledMsg.toString()));
+    }
+
+    private boolean setupManager() {
+        sversion = "N/A";
+        try {
+            sversion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("WARNING: MyRealEssentials wasn't able to get your client version.\nWill start with default version...");
+            sversion = "v1_18";
+            return false;
+        }
+
+        if (sversion.contains("v1_5")) {
+            successMessage("v1.5");
+            return true;
+        } else if (sversion.contains("v1_6")) {
+            successMessage("v1.6");
+            return true;
+        } else if (sversion.contains("v1_7")) {
+            successMessage("v1.7");
+            return true;
+        } else if (sversion.contains("v1_8")) {
+            successMessage("v1.8");
+            return true;
+        } else if (sversion.contains("v1_9")) {
+            successMessage("v1.9");
+            return true;
+        } else if (sversion.contains("v1_10")) {
+            successMessage("v1.10");
+            return true;
+        } else if (sversion.contains("v1_11")) {
+            successMessage("v1.11");
+            return true;
+        } else if (sversion.contains("v1_12")) {
+            successMessage("v1.12");
+            return true;
+        } else if (sversion.contains("v1_13")) {
+            successMessage("v1.13");
+            return true;
+        } else if (sversion.contains("v1_14")) {
+            successMessage("v1.14");
+            return true;
+        } else if (sversion.contains("v1_15")) {
+            successMessage("v1.15");
+            return true;
+        } else if (sversion.contains("v1_16")) {
+            successMessage("v1.16");
+            return true;
+        } else if (sversion.contains("v1_17")) {
+            successMessage("v1.17");
+            return true;
+        } else if (sversion.contains("v1_18")) {
+            successMessage("v1.18");
+            return true;
+        }
+        System.out.println("The version " + sversion + " is not suported.");
+        return false;
+    }
+}
