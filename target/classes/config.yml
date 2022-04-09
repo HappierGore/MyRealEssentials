@@ -1,1 +1,10 @@
 #Nothing yet
+Warps:
+    #Time in seconds by default
+    TimeToTeleport: 5
+    #Time in seconds per group
+    TimePerGroup: 
+        - algo: 20
+        - otro: 50
+        - test: 3
+    

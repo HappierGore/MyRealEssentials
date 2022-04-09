@@ -1,6 +1,5 @@
 package db;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Location;
 
@@ -12,11 +11,21 @@ public class WarpsDAO {
 
     private final String warpName;
     private final Location location;
-    private final Map<String, String> extras = new HashMap<>();
+    private final Map<String, String> extras;
+    private String permission = "";
 
-    public WarpsDAO(String warpName, Location location) {
+    //Used from DB
+    public WarpsDAO(String warpName, Location location, Map<String, String> extras) {
         this.warpName = warpName;
         this.location = location;
+        this.extras = extras;
+        if (extras.get("type").equalsIgnoreCase("private")) {
+            this.permission = "myessentials.warp." + warpName;
+        }
+    }
+
+    public String getPermission() {
+        return this.permission;
     }
 
     public String getWarpName() {

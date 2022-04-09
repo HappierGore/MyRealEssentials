@@ -2,15 +2,16 @@ package com.happiergore.myrealessentials;
 
 import commands.CommandManager;
 import commands.Arguments.argsComplete;
-import commands.UserControl.Gamemode;
 import db.SQLite;
 import events.OnPlayerDamage;
+import events.PlayerMove;
 import static helper.TextUtils.parseColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -56,17 +57,20 @@ public class main extends JavaPlugin implements Listener {
         OnPlayerDamage.OnPlayerDamage(e);
     }
 
+    @EventHandler
+    public void OnPlayerMove(PlayerMoveEvent e) {
+        PlayerMove.OnPlayerMove(e);
+    }
+
     //***********************
     //        Helper
     //***********************
     private void registerCommands() {
         CommandManager.init();
         argsComplete args = new argsComplete();
-        System.out.println("Commands registered at register call: " + CommandManager.getRegisteredCommands().toString());
         CommandManager.getRegisteredCommands().forEach(cmd -> {
-            System.out.println("Looping in " + cmd.getCmdName());
             this.getCommand(cmd.getCmdName()).setExecutor(new CommandManager());
-            if (!cmd.getArgsTab().isEmpty() || cmd.getCmdType().getArgsSize() > 0) {
+            if (cmd.getCmdType().getArgsSize() > 0) {
                 this.getCommand(cmd.getCmdName()).setTabCompleter(args);
             }
         });

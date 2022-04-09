@@ -24,4 +24,13 @@ commands:
        description: Set a public warp
   delwarp:
       description: Deletes a warp
+  warpinfo:
+      description: Shows the warp information
+  warps:
+      description: List of warps
+  warp:
+      description: Go to a warp
+  myessentials:
+      aliases: [mre]
+      description: Principal command
       

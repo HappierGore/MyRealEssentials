@@ -6,6 +6,7 @@ import commands.Commands;
 import commands.Arguments.ArgumentType;
 import static helper.TextUtils.parseColor;
 import java.util.HashSet;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,9 +27,13 @@ public class Heal extends Commands {
     @Override
     public void executeCommand(CommandSender sender, String[] args) {
         Player target = (Player) sender;
-
-        if (target == null) {
-            return;
+        if (args.length > 0) {
+            if (sender.hasPermission(this.getArgsPerms().get("other"))) {
+                target = Bukkit.getPlayer(args[0]);
+            } else {
+                sender.sendMessage(parseColor("&cYou aren't allowed to use this command to other players."));
+                return;
+            }
         }
 
         sender.sendMessage(parseColor("&a" + target.getName() + " has been healed and fed."));

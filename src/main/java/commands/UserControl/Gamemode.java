@@ -6,6 +6,7 @@ import commands.Commands;
 import commands.Arguments.ArgumentType;
 import static helper.TextUtils.parseColor;
 import java.util.HashSet;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,10 +20,10 @@ public final class Gamemode extends Commands {
     public Gamemode() {
         super("gamemode", new CommandType(new HashSet<ArgumentType>() {
             {
-                add(new ArgumentType(ArgEnum.integer).setName("0").setPosition(1).registerInTab());
-                add(new ArgumentType(ArgEnum.integer).setName("1").setPosition(1).registerInTab());
-                add(new ArgumentType(ArgEnum.integer).setName("2").setPosition(1).registerInTab());
-                add(new ArgumentType(ArgEnum.integer).setName("3").setPosition(1).registerInTab());
+                add(new ArgumentType(ArgEnum.integer).setName("0").setPosition(1));
+                add(new ArgumentType(ArgEnum.integer).setName("1").setPosition(1));
+                add(new ArgumentType(ArgEnum.integer).setName("2").setPosition(1));
+                add(new ArgumentType(ArgEnum.integer).setName("3").setPosition(1));
                 add(new ArgumentType(ArgEnum.target).setPosition(2).optional());
             }
         }));
@@ -30,11 +31,14 @@ public final class Gamemode extends Commands {
 
     @Override
     public void executeCommand(CommandSender sender, String[] args) {
-//MUST CHANGE
         Player target = (Player) sender;
-
-        if (target == null) {
-            return;
+        if (args.length > 1) {
+            if (sender.hasPermission(this.getArgsPerms().get("other"))) {
+                target = Bukkit.getPlayer(args[1]);
+            } else {
+                sender.sendMessage(parseColor("&cYou aren't allowed to use this command to other players."));
+                return;
+            }
         }
 
         if (args[0].equals("0")) {

@@ -5,6 +5,7 @@ import commands.Arguments.ArgumentType;
 import commands.CommandType;
 import commands.Commands;
 import db.WarpsJBDC;
+import static helper.TextUtils.parseColor;
 import java.util.ArrayList;
 import java.util.HashSet;
 import org.bukkit.command.CommandSender;
@@ -22,7 +23,7 @@ public class DeleteWarp extends Commands {
                     {
                         addAll(WarpsJBDC.WARPS_REGISTERED.keySet());
                     }
-                }));
+                }).noPermission());
             }
         }));
     }
@@ -40,7 +41,13 @@ public class DeleteWarp extends Commands {
 
     @Override
     public void executeCommand(CommandSender sender, String[] args) {
-        System.out.println("You want to delete: " + args[0]);
+        if (WarpsJBDC.WARPS_REGISTERED.containsKey(args[0])) {
+            if (WarpsJBDC.delete(WarpsJBDC.WARPS_REGISTERED.get(args[0]))) {
+                sender.sendMessage(parseColor("&aThe warp " + args[0] + " &ahas been deleted."));
+            } else {
+                sender.sendMessage(parseColor("&cThere was an problem when trying to delete the warp. Please check the console and try again later."));
+            }
+        }
     }
 
 }

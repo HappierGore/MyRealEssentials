@@ -2,12 +2,10 @@ package commands;
 
 import commands.Arguments.ArgumentType;
 import commands.Arguments.ArgEnum;
-import commands.WarpControl.SetWarp;
 import commands.ItemControl.*;
 import commands.UserControl.*;
-import commands.WarpControl.DeleteWarp;
+import commands.WarpControl.*;
 import static helper.TextUtils.parseColor;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -25,7 +23,6 @@ import org.bukkit.entity.Player;
 public class CommandManager implements CommandExecutor {
 
     public static void init() {
-        System.out.println("Creating...");
         registerCommand(new Gamemode());
         registerCommand(new God());
         registerCommand(new Heal());
@@ -34,16 +31,17 @@ public class CommandManager implements CommandExecutor {
         registerCommand(new RemoveLore());
         registerCommand(new SetWarp());
         registerCommand(new DeleteWarp());
+        registerCommand(new WarpInfo());
+        registerCommand(new Warps());
+        registerCommand(new Warp());
+        registerCommand(new Reload());
+
     }
 
     private final static Map<String, Commands> COMMANDS = new HashMap<>();
 
-    public static void registerCommand(Commands cmd) {
+    private static void registerCommand(Commands cmd) {
         COMMANDS.put(cmd.getCmdName(), cmd);
-    }
-
-    public static void unregisterCommand(Commands cmd) {
-        COMMANDS.remove(cmd.getCmdName());
     }
 
     public static Set<Commands> getRegisteredCommands() {

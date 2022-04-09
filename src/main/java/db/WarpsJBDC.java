@@ -21,7 +21,7 @@ public class WarpsJBDC {
     private static final String SQL_SELECT = "SELECT * from " + SQLite.WARPS_TABLE;
     private static final String SQL_INSERT = "INSERT INTO " + SQLite.WARPS_TABLE + "(name, location, extras) VALUES(?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE " + SQLite.WARPS_TABLE + " SET location = ?, extras = ? WHERE name = ?";
-    private static final String SQL_DELETE = "DELETE FROM " + SQLite.WARPS_TABLE + "WHERE name = ?";
+    private static final String SQL_DELETE = "DELETE FROM " + SQLite.WARPS_TABLE + " WHERE name = ?";
 
     public static Map<String, WarpsDAO> WARPS_REGISTERED = new HashMap<>();
 
@@ -59,20 +59,20 @@ public class WarpsJBDC {
 
                     }
                 }
+                Map<String, String> extra = new HashMap<>();
                 Location location = new Location(Bukkit.getWorld(worldName), x, y, z, pitch, yaw);
-                WarpsDAO warp = new WarpsDAO(warpName, location);
-                WARPS_REGISTERED.put(warp.getWarpName(), warp);
                 String extras = rs.getString("extras");
                 extras = extras.replaceAll("\\{|\\}", " ");
                 if (!extras.equals("")) {
                     for (String entry : extras.split(",")) {
                         String key = entry.split("=")[0].trim();
                         String value = entry.split("=")[1].trim();
-                        warp.getExtras().put(key, value);
+                        extra.put(key, value);
                     }
                 }
+                WarpsDAO warp = new WarpsDAO(warpName, location, extra);
 
-                System.out.println(parseColor(WARPS_PREFFIX + " Warp " + warp.getWarpName() + " has been loaded successfully"));
+                WARPS_REGISTERED.put(warp.getWarpName(), warp);
             }
             pstmt.close();
         } catch (SQLException e) {

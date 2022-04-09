@@ -1,8 +1,6 @@
 package commands.Arguments;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -11,19 +9,30 @@ import java.util.Map;
 public class ArgumentType {
 
     private final ArgEnum type;
-    private boolean optional = false;
     private int position;
     private String name = "";
-    private boolean registerInTab = false;
     private String hint = "";
     private List<String> list;
+    private String uniquePermission = "";
+    private boolean optional = false;
+    private boolean noPermission = false;
 
     public ArgumentType(ArgEnum type) {
         this.type = type;
     }
 
+    public ArgumentType noPermission() {
+        this.noPermission = true;
+        return this;
+    }
+
     public ArgumentType setHint(String hint) {
         this.hint = hint;
+        return this;
+    }
+
+    public ArgumentType setUniquePermission(String permission) {
+        this.uniquePermission = permission;
         return this;
     }
 
@@ -46,14 +55,17 @@ public class ArgumentType {
         return this;
     }
 
-    public ArgumentType registerInTab() {
-        this.registerInTab = true;
-        return this;
-    }
-
     public ArgumentType setList(List<String> list) {
         this.list = list;
         return this;
+    }
+
+    public boolean usesPermission() {
+        return !this.noPermission;
+    }
+
+    public String getUniquePermission() {
+        return this.uniquePermission;
     }
 
     public List<String> getList() {
@@ -72,10 +84,6 @@ public class ArgumentType {
         return this.name;
     }
 
-    public boolean toTab() {
-        return this.registerInTab;
-    }
-
     public String getHint() {
         return this.hint;
     }
@@ -88,14 +96,11 @@ public class ArgumentType {
         sb.append(", optional=").append(optional);
         sb.append(", position=").append(position);
         sb.append(", name=").append(name);
-        sb.append(", registerInTab=").append(registerInTab);
         sb.append(", hint=").append(hint);
         sb.append(", list=").append(list);
         sb.append(", memory=").append(super.toString());
         sb.append('}');
         return sb.toString();
     }
-
-  
 
 }

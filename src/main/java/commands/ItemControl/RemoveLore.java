@@ -24,7 +24,7 @@ public class RemoveLore extends Commands {
         super("removelore", new CommandType(new HashSet<ArgumentType>() {
             {
                 add(new ArgumentType(ArgEnum.integer).setPosition(1).setHint("&cYou need to specify the line to remove the lore."));
-                add(new ArgumentType(ArgEnum.string).setName("all").optional().registerInTab().setPosition(1));
+                add(new ArgumentType(ArgEnum.string).setName("all").optional().setPosition(1));
             }
         }));
         this.onlyPlayer(true);
