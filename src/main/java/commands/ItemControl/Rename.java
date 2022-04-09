@@ -1,8 +1,11 @@
 package commands.ItemControl;
 
+import commands.Arguments.ArgEnum;
 import commands.CommandType;
 import commands.Commands;
+import commands.Arguments.ArgumentType;
 import static helper.TextUtils.parseColor;
+import java.util.HashSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -17,7 +20,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class Rename extends Commands {
     
     public Rename() {
-        super("rename", new CommandType(2, null));
+        super("rename", new CommandType(new HashSet<ArgumentType>() {
+            {
+                add(new ArgumentType(ArgEnum.string).setPosition(1).optional());
+            }
+        }));
         this.onlyPlayer(true);
     }
     
@@ -31,7 +38,6 @@ public class Rename extends Commands {
         }
         ItemMeta itemMeta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
         itemMeta.setDisplayName(parseColor(String.join(" ", args)));
-//        player.getInventory().remove(item);
         item.setItemMeta(itemMeta);
         player.getInventory().setItemInHand(item);
         player.sendMessage(parseColor("&aItem renamed!"));

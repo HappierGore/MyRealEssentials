@@ -1,11 +1,11 @@
 package commands;
 
-import static helper.TextUtils.parseColor;
+import commands.Arguments.ArgumentType;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import org.bukkit.Bukkit;
+import java.util.Set;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  *
@@ -16,7 +16,8 @@ public abstract class Commands {
     private final String cmdName;
     private final String cmdPermission;
     private boolean onlyPlayer = false;
-    private final Map<String, String> arguments = new HashMap<>();
+    private final Map<String, String> argPermissions = new HashMap<>();
+    private final Set<ArgumentType> argsToTab = new HashSet<>();
     private final CommandType cmdType;
 
     public Commands(String cmdName, CommandType cmdType) {
@@ -24,12 +25,13 @@ public abstract class Commands {
         this.cmdPermission = "myessentials." + cmdName;
 
         if (cmdType.allowsTarget()) {
-            this.arguments.put("other", "myessentials." + cmdName + ".other");
+            this.argPermissions.put("other", "myessentials." + cmdName + ".other");
         }
 
-        cmdType.getArgsPerPosition().values().forEach(argArr -> {
-            for (String arg : argArr) {
-                this.arguments.put(arg, "myessentials." + cmdName + "." + arg);
+        cmdType.getArgs().forEach(arg -> {
+            this.argPermissions.put(arg.getName(), "myessentials." + cmdName + "." + arg.getName());
+            if (arg.toTab()) {
+                argsToTab.add(arg);
             }
         });
 
@@ -37,24 +39,6 @@ public abstract class Commands {
     }
 
     public abstract void executeCommand(CommandSender sender, String[] args);
-
-    public Player generateTarget(CommandSender sender, String[] args, int targetPosition) {
-        Player target;
-        if (args.length > targetPosition) {
-            target = Bukkit.getPlayer(args[targetPosition]);
-
-            if (target == null) {
-                sender.sendMessage(parseColor("&cThat player doesn't exist or is not online. Please, try again"));
-                return null;
-            }
-        } else if (sender instanceof Player player) {
-            target = player;
-        } else {
-            sender.sendMessage(parseColor("&cYou can only use this command to other players."));
-            return null;
-        }
-        return target;
-    }
 
     public void onlyPlayer(boolean value) {
         this.onlyPlayer = value;
@@ -72,12 +56,20 @@ public abstract class Commands {
         return cmdPermission;
     }
 
-    public Map<String, String> getArguments() {
-        return arguments;
+    public Map<String, String> getArgsPerms() {
+        return this.argPermissions;
+    }
+
+    public Set<ArgumentType> getArgsTab() {
+        return this.argsToTab;
     }
 
     public CommandType getCmdType() {
         return cmdType;
+    }
+
+    public void refreshArgList() {
+
     }
 
 }

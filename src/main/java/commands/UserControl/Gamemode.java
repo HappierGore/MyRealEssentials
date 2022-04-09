@@ -1,11 +1,11 @@
 package commands.UserControl;
 
+import commands.Arguments.ArgEnum;
 import commands.CommandType;
 import commands.Commands;
+import commands.Arguments.ArgumentType;
 import static helper.TextUtils.parseColor;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,24 +17,21 @@ import org.bukkit.entity.Player;
 public final class Gamemode extends Commands {
 
     public Gamemode() {
-        super("gamemode", new CommandType(2, new HashMap<Integer, Set<String>>() {
+        super("gamemode", new CommandType(new HashSet<ArgumentType>() {
             {
-                put(1, new HashSet<String>() {
-                    {
-                        add("0");
-                        add("1");
-                        add("2");
-                        add("3");
-                    }
-                });
+                add(new ArgumentType(ArgEnum.integer).setName("0").setPosition(1).registerInTab());
+                add(new ArgumentType(ArgEnum.integer).setName("1").setPosition(1).registerInTab());
+                add(new ArgumentType(ArgEnum.integer).setName("2").setPosition(1).registerInTab());
+                add(new ArgumentType(ArgEnum.integer).setName("3").setPosition(1).registerInTab());
+                add(new ArgumentType(ArgEnum.target).setPosition(2).optional());
             }
-        }).allowTargeting(2));
+        }));
     }
 
     @Override
     public void executeCommand(CommandSender sender, String[] args) {
-
-        Player target = this.generateTarget(sender, args, 1);
+//MUST CHANGE
+        Player target = (Player) sender;
 
         if (target == null) {
             return;

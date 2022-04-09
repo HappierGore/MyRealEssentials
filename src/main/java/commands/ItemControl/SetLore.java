@@ -1,9 +1,12 @@
 package commands.ItemControl;
 
+import commands.Arguments.ArgEnum;
 import commands.CommandType;
 import commands.Commands;
+import commands.Arguments.ArgumentType;
 import static helper.TextUtils.parseColor;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,7 +22,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class SetLore extends Commands {
 
     public SetLore() {
-        super("setlore", new CommandType(2, null));
+        super("setlore", new CommandType(new HashSet<ArgumentType>() {
+            {
+                add(new ArgumentType(ArgEnum.integer).setPosition(1).setHint("&cYou need to specify the line where you will add the lore."));
+                add(new ArgumentType(ArgEnum.string).setPosition(2).optional());
+            }
+        }));
+        this.onlyPlayer(true);
     }
 
     @Override

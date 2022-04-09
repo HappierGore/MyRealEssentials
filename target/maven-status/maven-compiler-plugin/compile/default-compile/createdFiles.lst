@@ -1,12 +1,10 @@
-commands\argsComplete.class
-commands\ItemControl\SetLore.class
-commands\UserControl\Gamemode$1.class
 commands\ItemControl\RemoveLore.class
 commands\Commands.class
-commands\UserControl\Gamemode$1$1.class
 commands\CommandManager$1.class
 commands\CommandManager.class
 commands\UserControl\Heal.class
 commands\UserControl\Gamemode.class
+commands\ItemControl\SetLore.class
+commands\UserControl\Gamemode$1.class
 com\happiergore\myrealessentials\main.class
 commands\UserControl\God.class

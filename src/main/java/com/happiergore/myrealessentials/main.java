@@ -1,8 +1,9 @@
 package com.happiergore.myrealessentials;
 
 import commands.CommandManager;
-import commands.argsComplete;
+import commands.Arguments.argsComplete;
 import commands.UserControl.Gamemode;
+import db.SQLite;
 import events.OnPlayerDamage;
 import static helper.TextUtils.parseColor;
 import org.bukkit.Bukkit;
@@ -27,7 +28,8 @@ public class main extends JavaPlugin implements Listener {
 
         System.out.println(parseColor("\n&3------------------ §bMyRealEssentials - Logger §3------------------"));
 
-        if (!setupManager()) {
+        if (!SQLite.initialize() || !setupManager()) {
+            System.out.println(parseColor("\n&cThere was an error when trying to load My Real Essentials, disabling it..."));
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -64,7 +66,7 @@ public class main extends JavaPlugin implements Listener {
         CommandManager.getRegisteredCommands().forEach(cmd -> {
             System.out.println("Looping in " + cmd.getCmdName());
             this.getCommand(cmd.getCmdName()).setExecutor(new CommandManager());
-            if (!cmd.getArguments().isEmpty()) {
+            if (!cmd.getArgsTab().isEmpty() || cmd.getCmdType().getArgsSize() > 0) {
                 this.getCommand(cmd.getCmdName()).setTabCompleter(args);
             }
         });

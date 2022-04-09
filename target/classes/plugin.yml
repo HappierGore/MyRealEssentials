@@ -22,4 +22,6 @@ commands:
        description: Remove a line of lore of an item
   setwarp:
        description: Set a public warp
+  delwarp:
+      description: Deletes a warp
       
