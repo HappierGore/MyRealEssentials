@@ -2,7 +2,9 @@ package commands;
 
 import commands.Arguments.ArgumentType;
 import commands.Arguments.ArgEnum;
+import commands.InventoryControl.SeeInventory;
 import commands.ItemControl.*;
+import commands.Spawn.*;
 import commands.UserControl.*;
 import commands.WarpControl.*;
 import static helper.TextUtils.parseColor;
@@ -35,12 +37,15 @@ public class CommandManager implements CommandExecutor {
         registerCommand(new Warps());
         registerCommand(new Warp());
         registerCommand(new Reload());
+        registerCommand(new SetSpawn());
+        registerCommand(new SeeInventory());
 
     }
 
     private final static Map<String, Commands> COMMANDS = new HashMap<>();
 
     private static void registerCommand(Commands cmd) {
+        System.out.println("Registering command : " + cmd.toString());
         COMMANDS.put(cmd.getCmdName(), cmd);
     }
 
@@ -175,9 +180,13 @@ public class CommandManager implements CommandExecutor {
                     //If not, default message with arguments necessary will be sent.
                     for (ArgumentType t : cmdType.getArgsInPosition(j)) {
                         if (!t.isOptional()) {
-                            if (t.getName().isBlank()) {
+                            if (t.getName().isBlank() && !t.getHint().isBlank()) {
                                 sender.sendMessage(parseColor(t.getHint()));
                             } else {
+                                if (t.getArgType() == ArgEnum.target) {
+                                    sender.sendMessage(parseColor("&cThis command needs a target of type player to work."));
+                                    return false;
+                                }
                                 sender.sendMessage(parseColor("&cThis command needs arguments to works:\n " + String.join(", ", cmdType.getArgsNamesInPosition(j))));
                             }
                             return false;

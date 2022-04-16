@@ -21,9 +21,20 @@ public abstract class Commands {
     public Commands(String cmdName, CommandType cmdType) {
         this.cmdName = cmdName;
         this.cmdPermission = "myessentials." + cmdName;
+        //System.out.println("Permissions of " + cmdName + "\n" + argPermissions.toString());
+        this.cmdType = init(cmdPermission, cmdType);
+    }
 
+    public Commands(CommandType cmdType) {
+        this.cmdName = "myessentials";
+        this.cmdPermission = cmdName;
+        //System.out.println("Permissions of " + cmdName + "\n" + argPermissions.toString());
+        this.cmdType = init(cmdPermission, cmdType);
+    }
+
+    private final CommandType init(String cmdPermission, CommandType cmdType) {
         if (cmdType.allowsTarget()) {
-            this.argPermissions.put("other", "myessentials." + cmdName + ".other");
+            this.argPermissions.put("other", cmdPermission + ".other");
         }
 
         for (ArgumentType arg : cmdType.getArgs()) {
@@ -31,54 +42,64 @@ public abstract class Commands {
                 break;
             }
             if (!arg.getUniquePermission().isBlank()) {
-                this.argPermissions.put("generic", "myessentials." + cmdName + "." + arg.getUniquePermission());
+                this.argPermissions.put("generic", cmdPermission + "." + arg.getUniquePermission());
                 break;
             }
 
             if (arg.getArgType() == ArgEnum.list) {
                 arg.getList().forEach(entry -> {
-                    this.argPermissions.put("arg:" + entry, "myessentials." + cmdName + "." + entry);
+                    this.argPermissions.put("arg:" + entry, cmdPermission + "." + entry);
                 });
                 break;
             }
 
             if (!arg.getName().isBlank()) {
-                this.argPermissions.put(arg.getName(), "myessentials." + cmdName + "." + arg.getName());
+                this.argPermissions.put(arg.getName(), cmdPermission + "." + arg.getName());
             }
         }
-        //System.out.println("Permissions of " + cmdName + "\n" + argPermissions.toString());
-
-        this.cmdType = cmdType;
+        return cmdType;
     }
 
     public abstract void executeCommand(CommandSender sender, String[] args);
 
-    public void onlyPlayer(boolean value) {
+    public final void onlyPlayer(boolean value) {
         this.onlyPlayer = value;
     }
 
-    public boolean onlyToPlayer() {
+    public final boolean onlyToPlayer() {
         return this.onlyPlayer;
     }
 
-    public String getCmdName() {
+    public final String getCmdName() {
         return cmdName;
     }
 
-    public String getCmdPermission() {
+    public final String getCmdPermission() {
         return cmdPermission;
     }
 
-    public Map<String, String> getArgsPerms() {
+    public final Map<String, String> getArgsPerms() {
         return this.argPermissions;
     }
 
-    public CommandType getCmdType() {
+    public final CommandType getCmdType() {
         return cmdType;
     }
 
     public void refreshArgList() {
+    }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Commands{");
+        sb.append("cmdName=").append(cmdName);
+        sb.append(", cmdPermission=").append(cmdPermission);
+        sb.append(", onlyPlayer=").append(onlyPlayer);
+        sb.append(", argPermissions=").append(argPermissions);
+        sb.append(", cmdType=").append(cmdType);
+        sb.append('}');
+        return sb.toString();
     }
 
 }

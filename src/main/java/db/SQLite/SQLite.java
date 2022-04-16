@@ -1,4 +1,4 @@
-package db;
+package db.SQLite;
 
 import com.happiergore.myrealessentials.main;
 import java.io.File;

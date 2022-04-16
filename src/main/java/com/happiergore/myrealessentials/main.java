@@ -1,17 +1,25 @@
 package com.happiergore.myrealessentials;
 
+import Behaviours.PauseMoveInventory;
 import commands.CommandManager;
 import commands.Arguments.argsComplete;
-import db.SQLite;
-import events.OnPlayerDamage;
-import events.PlayerMove;
+import db.SQLite.SQLite;
+import events.*;
 import static helper.TextUtils.parseColor;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -24,6 +32,8 @@ public class main extends JavaPlugin implements Listener {
 
     public static FileConfiguration configYML;
 
+    public static LuckPerms luckPerms;
+
     @Override
     public void onEnable() {
 
@@ -34,6 +44,10 @@ public class main extends JavaPlugin implements Listener {
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+
+        luckPerms = provider.getProvider();
 
         System.out.println(parseColor("&9------------------------------------------------------------------"));
 
@@ -59,7 +73,37 @@ public class main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void OnPlayerMove(PlayerMoveEvent e) {
-        PlayerMove.OnPlayerMove(e);
+        PlayerMove.PlayerMoveEvent(e);
+    }
+
+    @EventHandler
+    public void OnClickInventory(InventoryClickEvent e) {
+        OnClickInventory.OnClickInventory(e);
+    }
+
+    @EventHandler
+    public void OnCloseInventory(InventoryCloseEvent e) {
+        OnCloseInventory.OnCloseInventory(e);
+    }
+
+    @EventHandler
+    public void OnBlockPlace(BlockPlaceEvent e) {
+        PauseMoveInventory.OnPlaceBlock(e);
+    }
+
+    @EventHandler
+    public void OnItemDrop(PlayerDropItemEvent e) {
+        PauseMoveInventory.OnDropItem(e);
+    }
+
+    @EventHandler
+    public void OnPlayerLeaves(PlayerQuitEvent e) {
+        OnPlayerQuit.OnPlayerQuit(e);
+    }
+
+    @EventHandler
+    public void OnPlayerJoins(PlayerJoinEvent e) {
+        OnPlayerJoins.OnPlayerJoins(e);
     }
 
     //***********************

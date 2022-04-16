@@ -21,8 +21,7 @@ public class argsComplete implements TabCompleter {
         for (Commands command : CommandManager.getRegisteredCommands()) {
 
             //If the command executed exist into commands registered
-            if (command.getCmdName().equalsIgnoreCase(cmd.getName())) {
-
+            if (command.getCmdName().equals(cmd.getName())) {
                 //Loop over each command registered
                 for (int i = 1; i <= command.getCmdType().getArgsSize(); i++) {
 
@@ -64,6 +63,7 @@ public class argsComplete implements TabCompleter {
 
                                 return completions;
                             }
+
                             //If the type is another, then just add the name
                             if (sender.hasPermission(command.getArgsPerms().get(argType.getName()))) {
                                 completions.add(argType.getName());

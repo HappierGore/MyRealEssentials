@@ -31,12 +31,25 @@ public final class Gamemode extends Commands {
 
     @Override
     public void executeCommand(CommandSender sender, String[] args) {
-        Player target = (Player) sender;
+        Player target = null;
+
         if (args.length > 1) {
             if (sender.hasPermission(this.getArgsPerms().get("other"))) {
+                System.out.println("Otro");
                 target = Bukkit.getPlayer(args[1]);
+                System.out.println(target.toString());
             } else {
                 sender.sendMessage(parseColor("&cYou aren't allowed to use this command to other players."));
+                return;
+            }
+        }
+
+        if (target == null) {
+            if (sender instanceof Player player) {
+                target = player;
+
+            } else {
+                sender.sendMessage(parseColor("&cThis command only can be used into other players while it's executing in console."));
                 return;
             }
         }

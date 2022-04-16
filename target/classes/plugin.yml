@@ -33,4 +33,9 @@ commands:
   myessentials:
       aliases: [mre]
       description: Principal command
+  setspawn:
+      description: Set the spawn when player's join
+  seeinventory:
+      description: See the inventory of others players
+   
       

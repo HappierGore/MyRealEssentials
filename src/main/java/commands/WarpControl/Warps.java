@@ -3,7 +3,7 @@ package commands.WarpControl;
 import commands.Arguments.ArgumentType;
 import commands.CommandType;
 import commands.Commands;
-import db.WarpsJBDC;
+import db.SQLite.WarpsJBDC;
 import static helper.TextUtils.parseColor;
 import java.util.HashSet;
 import java.util.Set;

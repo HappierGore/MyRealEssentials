@@ -4,6 +4,7 @@ commands\WarpControl\Warp$1.class
 commands\ItemControl\Rename.class
 commands\UserControl\Heal.class
 commands\UserControl\Heal$1.class
+commands\Reload$1.class
 helper\TextUtils.class
 commands\WarpControl\DeleteWarp$1$1.class
 commands\Arguments\ArgumentType.class
@@ -21,7 +22,6 @@ commands\WarpControl\Warp.class
 commands\WarpControl\Warp$1$1.class
 commands\UserControl\God.class
 commands\Arguments\ArgEnum.class
-db\WarpsJBDC.class
 events\OnPlayerDamage.class
 commands\Commands.class
 commands\CommandManager$1.class
@@ -29,16 +29,17 @@ commands\ItemControl\RemoveLore$1.class
 commands\WarpControl\DeleteWarp$2.class
 commands\CommandManager.class
 commands\ItemControl\Rename$1.class
+commands\Spawn\SetSpawn.class
 commands\UserControl\Gamemode.class
 commands\WarpControl\SetWarp$1.class
 commands\Arguments\argsComplete.class
 commands\CommandType.class
-db\SQLite.class
 commands\WarpControl\Warp$2.class
 commands\UserControl\God$1.class
 commands\WarpControl\WarpInfo$2.class
 commands\CommandType$1.class
-db\WarpsDAO.class
+commands\Spawn\SetSpawn$1.class
 commands\WarpControl\SetWarp.class
 User\UserState.class
+commands\Reload.class
 commands\WarpControl\DeleteWarp.class

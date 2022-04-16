@@ -27,16 +27,28 @@ public class God extends Commands {
 
     @Override
     public void executeCommand(CommandSender sender, String[] args) {
-        Player target = (Player) sender;
-        if (args.length > 0) {
+        Player target = null;
+
+        if (args.length > 1) {
             if (sender.hasPermission(this.getArgsPerms().get("other"))) {
-                target = Bukkit.getPlayer(args[0]);
+                System.out.println("Otro");
+                target = Bukkit.getPlayer(args[1]);
+                System.out.println(target.toString());
             } else {
                 sender.sendMessage(parseColor("&cYou aren't allowed to use this command to other players."));
                 return;
             }
         }
 
+        if (target == null) {
+            if (sender instanceof Player player) {
+                target = player;
+
+            } else {
+                sender.sendMessage(parseColor("&cThis command only can be used into other players while it's executing in console."));
+                return;
+            }
+        }
         if (!UserState.players.containsKey(target)) {
             UserState.players.put(target, new UserState());
         }

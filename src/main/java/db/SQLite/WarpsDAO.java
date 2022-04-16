@@ -1,4 +1,4 @@
-package db;
+package db.SQLite;
 
 import java.util.Map;
 import org.bukkit.Location;
