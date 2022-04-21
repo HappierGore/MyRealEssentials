@@ -3,15 +3,16 @@ Warps:
     TimeToTeleport: 5
     #Time in seconds per group
     TimePerGroup: 
-        - algo: 20
-        - otro: 50
+        - some: 20
+        - group: 50
         - test: 3
 Spawnpoint:
     #Set none to disable it. Use /setspawn in-game to configure it
+    #It's not necessary set each group, only what you need
     default: none
     SpawnPerGroup:
-        - algo: none
-        - otro: none
+        - some: none
+        - group: none
         - test: none
         
     

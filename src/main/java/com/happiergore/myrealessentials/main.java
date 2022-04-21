@@ -1,11 +1,16 @@
 package com.happiergore.myrealessentials;
 
-import Behaviours.PauseMoveInventory;
-import commands.CommandManager;
-import commands.Arguments.argsComplete;
-import db.SQLite.SQLite;
-import events.*;
-import static helper.TextUtils.parseColor;
+import com.happiergore.myrealessentials.events.PlayerMove;
+import com.happiergore.myrealessentials.events.OnPlayerDamage;
+import com.happiergore.myrealessentials.events.OnPlayerJoins;
+import com.happiergore.myrealessentials.events.OnClickInventory;
+import com.happiergore.myrealessentials.events.OnPlayerQuit;
+import com.happiergore.myrealessentials.events.OnCloseInventory;
+import com.happiergore.myrealessentials.Behaviours.PauseMoveInventory;
+import com.happiergore.myrealessentials.commands.CommandManager;
+import com.happiergore.myrealessentials.commands.Arguments.argsComplete;
+import com.happiergore.myrealessentials.db.SQLite.SQLite;
+import static com.happiergore.myrealessentials.helper.TextUtils.parseColor;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -68,52 +73,52 @@ public class main extends JavaPlugin implements Listener {
     //***********************
     @EventHandler
     public void OnEntityDamage(EntityDamageEvent e) {
-        OnPlayerDamage.OnPlayerDamage(e);
+        new OnPlayerDamage().OnPlayerDamage(e);
     }
 
     @EventHandler
     public void OnPlayerMove(PlayerMoveEvent e) {
-        PlayerMove.PlayerMoveEvent(e);
+        new PlayerMove().PlayerMoveEvent(e);
     }
 
     @EventHandler
     public void OnClickInventory(InventoryClickEvent e) {
-        OnClickInventory.OnClickInventory(e);
+        new OnClickInventory().OnClickInventory(e);
     }
 
     @EventHandler
     public void OnCloseInventory(InventoryCloseEvent e) {
-        OnCloseInventory.OnCloseInventory(e);
+        new OnCloseInventory().OnCloseInventory(e);
     }
 
     @EventHandler
     public void OnBlockPlace(BlockPlaceEvent e) {
-        PauseMoveInventory.OnPlaceBlock(e);
+        new PauseMoveInventory().OnPlaceBlock(e);
     }
 
     @EventHandler
     public void OnItemDrop(PlayerDropItemEvent e) {
-        PauseMoveInventory.OnDropItem(e);
+        new PauseMoveInventory().OnDropItem(e);
     }
 
     @EventHandler
     public void OnPlayerLeaves(PlayerQuitEvent e) {
-        OnPlayerQuit.OnPlayerQuit(e);
+        new OnPlayerQuit().OnPlayerQuit(e);
     }
 
     @EventHandler
     public void OnPlayerJoins(PlayerJoinEvent e) {
-        OnPlayerJoins.OnPlayerJoins(e);
+        new OnPlayerJoins().OnPlayerJoins(e);
     }
 
     //***********************
     //        Helper
     //***********************
     private void registerCommands() {
-        CommandManager.init();
-        argsComplete args = new argsComplete();
-        CommandManager.getRegisteredCommands().forEach(cmd -> {
-            this.getCommand(cmd.getCmdName()).setExecutor(new CommandManager());
+        CommandManager cmdMan = new CommandManager();
+        argsComplete args = new argsComplete(cmdMan);
+        cmdMan.getRegisteredCommands().forEach(cmd -> {
+            this.getCommand(cmd.getCmdName()).setExecutor(cmdMan);
             if (cmd.getCmdType().getArgsSize() > 0) {
                 this.getCommand(cmd.getCmdName()).setTabCompleter(args);
             }

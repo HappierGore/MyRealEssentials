@@ -62,4 +62,5 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    <name>MyRealEssentials</name>
 </project>

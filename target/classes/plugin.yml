@@ -36,6 +36,10 @@ commands:
   setspawn:
       description: Set the spawn when player's join
   seeinventory:
+      aliases: [seeinv]
       description: See the inventory of others players
+  spawnmob:
+      description: Spawn a mob in the direction that players is seeing
+   
    
       
